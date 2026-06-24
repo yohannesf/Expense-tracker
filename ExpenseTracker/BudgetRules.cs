@@ -12,6 +12,8 @@
 //  Work one method at a time. Run the tests, watch them turn green.
 //  All methods are pure: no Console I/O, no shared state.
 // =====================================================================
+using System.Runtime;
+
 namespace ExpenseTracker;
 
 public static class BudgetRules
@@ -121,17 +123,18 @@ public static class BudgetRules
     /// Formats an amount as currency using the default "$" symbol.
     /// Implement this as an expression-bodied member that calls the overload.
     /// </summary>
-    public static string FormatCurrency(decimal amount)
-    {
+    public static string FormatCurrency(decimal amount) => FormatCurrency(amount, "$");
+   // {
         // TODO: return FormatCurrency(amount, "$");
-        throw new NotImplementedException();
-    }
+        //throw new NotImplementedException();
+    //}
 
     /// <summary>
     /// Formats an amount as currency using the given symbol, e.g. "$62.40".
     /// </summary>
     public static string FormatCurrency(decimal amount, string currencySymbol)
     {
+        return $"{currencySymbol}{amount:0.00}";
         // TODO: use a "0.00" format string
         throw new NotImplementedException();
     }
