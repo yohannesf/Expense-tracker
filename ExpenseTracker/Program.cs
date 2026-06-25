@@ -21,6 +21,95 @@
 // =====================================================================
 using ExpenseTracker;
 
-Console.WriteLine("MyBudget — TODO: build the interactive menu UI (see the brief).");
 
-// Delete the line above and implement the application here.
+//declare variables
+
+decimal monthlyBudget = 0.0m;
+bool isBudgetSet = false; //users need to enter budget before they start recording expenses.
+
+decimal totalExpense = 0.0m;
+
+//Category - running totals for each category
+decimal foodExpense = 0.0m;
+decimal transportExpense = 0.0m;
+decimal utilitiesExpense = 0.0m;
+decimal entertainmentExpense = 0.0m;
+decimal otherExpense = 0.0m;
+
+int selectedMenu;
+bool continueWorking = true; //the status of the main while loop - choosing opiton 4 will set continueWorking to false and exits the loop
+string status; //status of Budget
+
+//--------------Main Menu (loop)-----------------------
+
+while (continueWorking)
+{
+    Console.WriteLine();
+    Console.WriteLine("============Expense Tracker ==============");
+    Console.WriteLine();
+
+    Console.WriteLine("1) Add Expense  2) View Summary     3) Set Monthly Budget   4) Exit");
+
+    string? option = Console.ReadLine();
+
+    if (!int.TryParse(option, out selectedMenu)) { Console.WriteLine("Please Select the Correct Number from the Menu (1,2,3 or 4)"); }
+
+    switch (selectedMenu)
+    {
+        case 4:
+            Console.WriteLine("Thank you for using the Expense Tracker. Goodbye");
+            continueWorking = false;
+            break;
+
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            while (true)
+            {
+                Console.Write("Monthly budget: ");
+                string? budgetInput = Console.ReadLine();
+
+                if (decimal.TryParse(budgetInput, out decimal parsedBudget))
+                    {
+                        try
+                        {
+                            parsedBudget = BudgetRules.ValidateAmount(parsedBudget);
+                        }
+                        catch (InvalidExpenseException ex)
+                        {
+                            Console.WriteLine($"{ex.Message}");
+                            continue;
+                        }
+
+                    monthlyBudget = parsedBudget;
+                    isBudgetSet = true;  //When expense is added - we will check if budget is set before we do any calculation against budget
+                    Console.WriteLine($"Budget set to {BudgetRules.FormatCurrency(monthlyBudget)}.");
+                    
+                    decimal remaining = monthlyBudget - totalExpense;
+                    status = BudgetRules.BudgetStatus(remaining, monthlyBudget);  //from the BudgetRules class
+                    
+                    //print something like this ---- Budget: $500.00 remaining of $500.00 -> On track
+                    Console.WriteLine($"  Budget: {BudgetRules.FormatCurrency(remaining)} remaining of {BudgetRules.FormatCurrency(monthlyBudget)} -> {status}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("   Error: Budget must be a valid positive number.");
+                }
+                
+            }
+            break;
+        default:
+            Console.WriteLine();
+            Console.WriteLine("Please make the correct choice");
+            break;
+
+    };
+
+
+
+
+}
+
